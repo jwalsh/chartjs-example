@@ -1,0 +1,17 @@
+if [ -z "$1" ]
+then
+    echo "Usage: $0 swagger|web|api"
+else
+        if [ "$1" = "swagger" ]
+        then
+            swagger project edit cjs-swagger
+        fi
+        if [ "$1" = "web" ]
+        then
+            cd cjs-web && ng start
+        fi
+        if [ "$1" = "api" ]
+        then
+            cd cjs-api && lein ring server
+        fi
+fi

@@ -1,0 +1,183 @@
+swagger: '2.0'
+info:
+  version: 1.0.0
+  title: Chart API
+host: 'localhost:8080'
+schemes:
+  - http
+  - https
+consumes:
+  - application/json
+produces:
+  - application/json
+securityDefinitions:
+  JWT:
+    type: apiKey
+    name: X-Auth-Token
+    in: header
+
+paths:
+  /login:
+    post:
+      description: 'Allow users to log in and get a JWT token'
+      parameters:
+        - name: body
+          in: body
+          schema:
+            $ref: '#/definitions/Login'
+      responses:
+        '200':
+          description: Successful Operation
+          schema:
+            $ref: '#/definitions/Token'
+          examples:
+            application/json:
+              token: "example.test.token"
+        '400':
+          description: 'Bad Request'
+          schema:
+            $ref: '#/definitions/Error'
+        '401':
+          description: 'Invalid username or password'
+          schema:
+            $ref: '#/definitions/Error'
+
+  # Sorted end-points
+  /:
+    get:
+      summary: Overview of available links
+      responses:
+        '200':
+          description: Successful Operation
+          schema:
+            $ref: '#/definitions/Links'
+
+  /outcomes/{id}/report:
+    get:
+      summary: Outcome reports
+      parameters:
+        - in: path
+          name: id
+          description: Action id
+          minimum: 1
+          type: integer
+          required: true
+        - in: query
+          name: dateRange
+          type: string
+          enum:
+            - day
+            - week
+            - month
+            - year
+      responses:
+        '200':
+          description: Successful Operation
+          schema:
+            $ref: '#/definitions/OutcomeReport'
+        '405':
+          description: Permission denied
+          schema:
+            $ref: '#/definitions/Error'
+        '500':
+          description: Invalid token
+          schema:
+            $ref: '#/definitions/Error'
+        default:
+          description: Successful Operation
+      security:
+        - JWT: []
+
+definitions:
+  Login:
+    title: DataSet
+    type: object
+    required:
+      - username
+      - password
+    properties:
+      username:
+        type: string
+      password:
+        type: string
+
+  Token:
+    title: DataSet
+    type: object
+    required:
+      - token
+    properties:
+      token:
+        type: string
+
+  Links:
+    title: Links
+    type: object
+    required:
+      - _links
+    properties:
+      _links:
+        type: object
+
+  Error:
+   properties:
+     code:
+       type: integer
+       format: int32
+     message:
+       type: string
+
+  OutcomeReport:
+    title: Outcome
+    type: object
+    required:
+      - chart
+    properties:
+      title:
+        type: string
+      chart:
+        $ref: '#/definitions/Chart'
+
+  Chart:
+    title: Chart labels and datasets
+    type: object
+    required:
+      - labels
+      - datasets
+    properties:
+      labels:
+        type: array
+        items:
+          type: string
+      datasets:
+        type: array
+        items:
+          $ref: '#/definitions/DataSet'
+      type:
+        type: string
+      yaxesLabel:
+        type: string
+      xaxesLabel:
+        type: string
+
+  DataSet:
+    title: DataSet
+    type: object
+    required:
+      - data
+      - label
+    properties:
+      key:
+        type: string
+        enum:
+          - default1
+          - high
+          - average
+          - low
+        default: default1
+      data:
+        type: array
+        items:
+          type: number # or null
+      label:
+        type: string

@@ -1,0 +1,16 @@
+#+BEGIN_SRC restclient
+GET http://localhost:3000/
+
+#+END_SRC
+
+#+RESULTS:
+#+BEGIN_SRC text
+No acceptable resource available.
+GET http://localhost:3000/
+HTTP/1.1 406 Not Acceptable
+Date: Sat, 14 Apr 2018 23:09:28 GMT
+Content-Type: text/plain;charset=UTF-8
+Content-Length: 33
+Server: Jetty(9.2.21.v20170120)
+Request duration: 0.152145s
+#+END_SRC
