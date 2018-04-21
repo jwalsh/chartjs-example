@@ -6,9 +6,9 @@ else
         then
             swagger project edit cjs-swagger
         fi
-        if [ "$1" = "web" ]
+        if [ "$1" = "www" ]
         then
-            cd cjs-web && ng start
+            cd cjs-www && lein figwheel
         fi
         if [ "$1" = "api" ]
         then

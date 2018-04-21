@@ -1,31 +1,39 @@
-# CjsWww
+# cjs-www
 
-This project was generated with [angular-cli](https://github.com/angular/angular-cli) version 1.0.0-beta.26.
+FIXME: Write a one-line description of your library/project.
 
-## Development server
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
+## Overview
 
-## Code scaffolding
+FIXME: Write a paragraph about the library/project and highlight its goals.
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive/pipe/service/class/module`.
+## Setup
 
-## Build
+To get an interactive development environment run:
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory. Use the `-prod` flag for a production build.
+    lein figwheel
 
-## Running unit tests
+and open your browser at [localhost:3449](http://localhost:3449/).
+This will auto compile and send all changes to the browser without the
+need to reload. After the compilation process is complete, you will
+get a Browser Connected REPL. An easy way to try it is:
 
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
+    (js/alert "Am I connected?")
 
-## Running end-to-end tests
+and you should see an alert in the browser window.
 
-Run `ng e2e` to execute the end-to-end tests via [Protractor](http://www.protractortest.org/).
-Before running the tests make sure you are serving the app via `ng serve`.
+To clean all compiled files:
 
-## Deploying to GitHub Pages
+    lein clean
 
-Run `ng github-pages:deploy` to deploy to GitHub Pages.
+To create a production build run:
 
-## Further help
+    lein do clean, cljsbuild once min
 
-To get more help on the `angular-cli` use `ng help` or go check out the [Angular-CLI README](https://github.com/angular/angular-cli/blob/master/README.md).
+And open your browser in `resources/public/index.html`. You will not
+get live reloading, nor a REPL. 
+
+## License
+
+Copyright © 2014 FIXME
+
+Distributed under the Eclipse Public License either version 1.0 or (at your option) any later version.

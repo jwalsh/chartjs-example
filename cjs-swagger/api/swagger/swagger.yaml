@@ -52,7 +52,7 @@ paths:
           schema:
             $ref: '#/definitions/Links'
 
-  /outcomes/{id}/report:
+  /report/{id}:
     get:
       summary: Outcome reports
       parameters:
