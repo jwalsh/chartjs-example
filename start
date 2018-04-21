@@ -1,3 +1,5 @@
+#!/bin/sh
+
 if [ -z "$1" ]
 then
     echo "Usage: $0 swagger|web|api"

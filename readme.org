@@ -1,26 +1,23 @@
 * Links
 
-#+BEGIN_SRC restclient
+#+BEGIN_SRC http
 GET http://localhost:3000/
 
 #+END_SRC
 
 #+RESULTS:
-#+BEGIN_SRC text
-No acceptable resource available.
-GET http://localhost:3000/
-HTTP/1.1 406 Not Acceptable
-Date: Sat, 14 Apr 2018 23:09:28 GMT
-Content-Type: text/plain;charset=UTF-8
-Content-Length: 33
-Server: Jetty(9.2.21.v20170120)
-Request duration: 0.152145s
-#+END_SRC
+: HTTP/1.1 302 Found
+: Date: Sat, 21 Apr 2018 22:22:46 GMT
+: Location: /index.html
+: Content-Type: application/octet-stream
+: Content-Length: 0
+: Server: Jetty(9.2.21.v20170120)
+:
 
 
 * Login
 
-#+BEGIN_SRC restclient
+#+BEGIN_SRC http
 POST http://localhost:3000/login
 {
   "username": "string",
@@ -29,10 +26,43 @@ POST http://localhost:3000/login
 
 #+END_SRC
 
+#+RESULTS:
+#+begin_example
+HTTP/1.1 500 Response map is nil
+Date: Sat, 21 Apr 2018 22:22:56 GMT
+Cache-Control: must-revalidate,no-cache,no-store
+Content-Type: text/html; charset=ISO-8859-1
+Content-Length: 293
+Connection: close
+Server: Jetty(9.2.21.v20170120)
+
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html;charset=ISO-8859-1"/>
+<title>Error 500 </title>
+</head>
+<body>
+<h2>HTTP ERROR: 500</h2>
+<p>Problem accessing /login. Reason:
+<pre>    Response map is nil</pre></p>
+<hr /><i><small>Powered by Jetty://</small></i>
+</body>
+</html>
+#+end_example
+
 
 * User
 
-#+BEGIN_SRC restclient
+#+BEGIN_SRC http
 GET http://localhost:3000/users/1
 
 #+END_SRC
+
+#+RESULTS:
+: HTTP/1.1 500 Server Error
+: Date: Sat, 21 Apr 2018 22:23:04 GMT
+: Content-Type: application/json; charset=utf-8
+: Content-Length: 36
+: Server: Jetty(9.2.21.v20170120)
+:
+: {"errors":[{"id":"disallowed-key"}]}
