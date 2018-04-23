@@ -20,6 +20,12 @@
    :name s/Str
    })
 
+
+
+(s/defschema Chart
+  {
+   :labels s/
+   })
 (def users (atom {}))
 
 

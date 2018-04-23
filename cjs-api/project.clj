@@ -2,6 +2,7 @@
    :description "FIXME: write description"
    :dependencies [[org.clojure/clojure "1.8.0"]
                   [chart-api "1.0.0"]
+                  [joplin.core "0.3.10"]
                   [metosin/compojure-api "1.1.11"]]
    :ring {:handler cjs-api.handler/app}
    :uberjar-name "server.jar"

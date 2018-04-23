@@ -11,7 +11,10 @@
   :dependencies [[org.clojure/clojure "1.9.0"]
                  [org.clojure/clojurescript "1.9.946"]
                  [org.clojure/core.async  "0.4.474"]
+                 [prismatic/schema "1.1.9"]
                  [cljsjs/chartjs "2.7.0-0"]
+                 [devcards "0.2.1"]
+                 [secretary "1.2.3"]
                  [reagent-forms "0.5.40"]
                  [reagent "0.7.0"]]
 
@@ -28,6 +31,7 @@
                 ;; will cause figwheel to inject the figwheel client
                 ;; into your build
                 :figwheel {:on-jsload "cjs-www.core/on-js-reload"
+                           :devcards true
                            ;; :open-urls will pop open your application
                            ;; in the default browser once Figwheel has
                            ;; started and compiled your application.
@@ -59,7 +63,7 @@
              :css-dirs ["resources/public/css"] ;; watch and update CSS
 
              ;; Start an nREPL server into the running figwheel process
-             ;; :nrepl-port 7888
+             :nrepl-port 7888
 
              ;; Server Ring Handler (optional)
              ;; if you want to embed a ring handler into the figwheel http-kit
@@ -79,7 +83,7 @@
              ;; :open-file-command "myfile-opener"
 
              ;; if you are using emacsclient you can just use
-             ;; :open-file-command "emacsclient"
+             :open-file-command "emacsclient"
 
              ;; if you want to disable the REPL
              ;; :repl false

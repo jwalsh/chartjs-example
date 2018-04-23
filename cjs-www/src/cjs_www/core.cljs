@@ -1,35 +1,99 @@
 (ns cjs-www.core
-  (:require [reagent.core :as r :refer [atom]]
+  (:require [reagent.core :as r]
             [cljsjs.chartjs]
+            [schema.core :as s :include-macros true]
+            [secretary.core :as secretary :refer-macros [defroute]]
             ))
 
 (enable-console-print!)
 
 (println "src/cjs-www/core.cljs")
-(println c)
-;; define your app data so that it doesn't get over-written on reload
 
-(defonce app-state (atom {:text "Charts and DataSets"}))
+;; State
+
+(def app-state (r/atom
+                {
+                 :password nil
+                 :text "Charts and DataSets"
+                 }
+                ))
 
 (defonce title (r/atom "Charts and DataSets"))
+
+(def click-count (r/atom 0))
+
+;; Utilities
+
+(defn password-valid?
+  "Valid if password is greater than 5 characters"
+  [password]
+  (> (count password) 5))
+
+(defn password-color [password]
+  (let [valid-color "green"
+        invalid-color "red"]
+    (if (password-valid? password)
+      valid-color
+      invalid-color)))
+
+;; Components
 
 (defn plain-component []
   [:p "Login: " @title])
 
-(defn app []
+(defn header-component []
+  (r/create-class {:reagent-render (fn []
+                                     [:div
+                                      [:h2 title]])}))
+
+(defn simple-component []
   [:div
+   [:p "I am a component!"]
+   [:p.someclass
+    "I have " [:strong "bold"]
+    [:span {:style {:color "red"}} " and red "] "text."]])
+
+(defn profile-component []
+  [:div
+   [:h2 "Profile"]])
+
+(defn password-component []
+  [:input {:type "password"
+           :on-change #(swap! app-state assoc :password (-> % .-target .-value))}])
+
+(defn home-component []
+  [:div {:style {:margin-top "30px"}}
+   "Please enter a password greater than 5 characters. "
+   [:span {:style {:padding "20px"
+                   :background-color (password-color (@app-state :password))}}
+    [password-component]
+    ]])
+
+(defn counting-component []
+  [:div
+   "The atom " [:code "click-count"] " has value: "
+   @click-count ". "
+   [:input {:type "button" :value "Click me!"
+            :on-click #(swap! click-count inc)}]])
+(defn app []
+  [:div {:style {:padding "40px"}}
    [:h1 (:text @app-state)]
    [:h3 "Login"]
-   [:label "Username"]
-   [:input.form-control {:field :text :id :username}]
-   [:label "Password"]
-   [:input.form-control {:field :text :id :password}]
+   [:form {:action "http://localhost:3000/login"
+           :method :put
+           :style {:width "480px" :padding "40px" :border "1px solid #5555"}}
+    [:label "Username"]
+    [:input.form-control {:type :text :id :username}]
+    [:label "Password"]
+    [:input.form-control {:type :text :id :password}]
+    [:hr]
+    [:input {:type :submit}]]
+   [simple-component]
+   [counting-component]
    ])
 
 (r/render-component [app]
-                          (. js/document (getElementById "app")))
-
-
+                    (. js/document (getElementById "app")))
 
 (defn show-revenue-chart
   []
@@ -42,15 +106,17 @@
                                       {:data [3 6 9 12 15]
                                        :label "Cost in MM"
                                        :backgroundColor "#F08080"}]}}]
-      (js/Chart. context (clj->js chart-data))))
+    (js/Chart. context (clj->js chart-data))))
+
+(show-revenue-chart)
 
 (defn rev-chartjs-component
   []
   (r/create-class
-    {:component-did-mount #(show-revenue-chart)
-     :display-name        "chartjs-component"
-     :reagent-render      (fn []
-                            [:canvas {:id "rev-chartjs" :width "700" :height "380"}])}))
+   {:component-did-mount #(show-revenue-chart)
+    :display-name        "chartjs-component"
+    :reagent-render      (fn []
+                           [:canvas {:id "rev-chartjs" :width "640" :height "480"}])}))
 
 (defn on-js-reload []
   ;; optionally touch your app-state to force rerendering depending on
